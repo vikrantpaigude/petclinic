@@ -3,29 +3,22 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-trigger:
-- master
-
-pool:
-  vmImage: 'ubuntu-latest'
-
 steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)).'
-    Contents: '**\*'
-    TargetFolder: '$(Build.SourcesDirectory)).'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
+  - task: Maven@1
+    displayName: 'Maven app/pom.xml'
+    inputs:
+      mavenPomFile: '$(parameters.mavenPomFile)'
+  - task: CopyFiles@1
+    displayName: 'Copy Files to : $(build.artifactstagingdirectory)'
+    inputs:
+      SourceFolder: '$(sysytem.defaultworkingdirectory)'
+      Contents: '**/*.jar'
+      TargetFolder: 'build.artifactstagingdirectory'
+    condition: succeededOrFailed()
+  - task: PublishBuildArtifacts@1
+    displayName: 'publish artifact: drop ' 
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+    condition: succeededOrFailed()
+
+    
