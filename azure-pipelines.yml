@@ -1,8 +1,9 @@
 # Maven
-- task: CopyPublishBuildArtifacts@1
+- task: DownloadPipelineArtifact@1
   inputs:
-    ArtifactName: 'petclinic'
-    ArtifactType: 'Container'
+    buildType: 'current'
+    itemPattern: '**/*.jar'
+    targetPath: '$(System.ArtifactsDirectory)'
 # Build your Java project and run tests with Apache Maven.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
