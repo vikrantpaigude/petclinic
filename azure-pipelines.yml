@@ -7,7 +7,8 @@ steps:
   - task: Maven@1
     displayName: 'Maven app/pom.xml'
     inputs:
-      mavenPomFile: '$(parameters.mavenPomFile)'
+      mavenPomFile: 'IdentityService/pom.xml'
+      goals: 'clean package'
   - task: CopyFiles@1
     displayName: 'Copy Files to : $(build.artifactstagingdirectory)'
     inputs:
